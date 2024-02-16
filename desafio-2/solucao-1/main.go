@@ -38,32 +38,44 @@ type Address struct {
 	Uf         string `json:"uf"`
 	Api        string `json:"api"`
 }
-type API uint8
-
-const (
-	Brasilapi API = iota
-	Viacep
-)
 
 func main() {
-	// Canal para receber o resultado
-	result := make(chan *Address, 2)
+	cBrasilapi := make(chan *BrasilApi)
+	cViacep := make(chan *ViaoCep)
 
 	// Faz as requisições concorrentemente
-	go fetchAddress("https://brasilapi.com.br/api/cep/v1/01153000", result, Brasilapi)
-	go fetchAddress("http://viacep.com.br/ws/01153000/json/", result, Viacep)
+	go fetchBrasilapi("https://brasilapi.com.br/api/cep/v1/01153000", cBrasilapi)
+	go fetchViaoCep("http://viacep.com.br/ws/01153000/json/", cViacep)
 
 	// Seleciona o primeiro resultado disponível
 	select {
-	case address := <-result:
-		fmt.Println("Endereço encontrado pela primeira API:")
+	case result := <-cBrasilapi:
+		address := &Address{
+			Cep:        result.Cep,
+			Logradouro: result.Street,
+			Bairro:     result.Neighborhood,
+			Localidade: result.City,
+			Uf:         result.State,
+			Api:        "Brasilapi",
+		}
 		printAddress(address)
+	case result := <-cViacep:
+		address := &Address{
+			Cep:        result.Cep,
+			Logradouro: result.Logradouro,
+			Bairro:     result.Bairro,
+			Localidade: result.Localidade,
+			Uf:         result.Uf,
+			Api:        "Viacep",
+		}
+		printAddress(address)
+
 	case <-time.After(1 * time.Second):
 		fmt.Println("Timeout: Nenhuma resposta recebida dentro do tempo limite.")
 	}
 }
 
-func fetchAddress(url string, result chan<- *Address, api API) {
+func fetchBrasilapi(url string, result chan<- *BrasilApi) {
 	// Faz a requisição para a API
 	resp, err := http.Get(url)
 	if err != nil {
@@ -79,43 +91,47 @@ func fetchAddress(url string, result chan<- *Address, api API) {
 		return
 	}
 
-	address := &Address{}
 	// Converte o JSON em uma estrutura de endereço
-	if api == Viacep {
-		viaoCep := &ViaoCep{}
-		err = json.Unmarshal(body, viaoCep)
-		address = &Address{
-			Cep:        viaoCep.Cep,
-			Logradouro: viaoCep.Logradouro,
-			Bairro:     viaoCep.Bairro,
-			Localidade: viaoCep.Localidade,
-			Uf:         viaoCep.Uf,
-			Api:        "Viacep",
-		}
-	}
-	if api == Brasilapi {
-		brasilApi := &BrasilApi{}
-		err = json.Unmarshal(body, brasilApi)
-
-		address = &Address{
-			Cep:        brasilApi.Cep,
-			Logradouro: brasilApi.Street,
-			Bairro:     brasilApi.Neighborhood,
-			Localidade: brasilApi.City,
-			Uf:         brasilApi.State,
-			Api:        "Brasilapi",
-		}
-	}
+	brasilApi := &BrasilApi{}
+	err = json.Unmarshal(body, brasilApi)
 
 	if err != nil {
 		fmt.Printf("Erro ao decodificar resposta da %s: %v\n", url, err)
 		return
 	}
 	// Envie o resultado para o canal
-	result <- address
+	result <- brasilApi
 }
 
+func fetchViaoCep(url string, result chan<- *ViaoCep) {
+	// Faz a requisição para a API
+	resp, err := http.Get(url)
+	if err != nil {
+		fmt.Printf("Erro ao fazer requisição para %s: %v\n", url, err)
+		return
+	}
+	defer resp.Body.Close()
+
+	// Lê o corpo da resposta
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		fmt.Printf("Erro ao ler resposta da %s: %v\n", url, err)
+		return
+	}
+
+	// Converte o JSON em uma estrutura de endereço
+	viaoCep := &ViaoCep{}
+	err = json.Unmarshal(body, viaoCep)
+
+	if err != nil {
+		fmt.Printf("Erro ao decodificar resposta da %s: %v\n", url, err)
+		return
+	}
+	// Envie o resultado para o canal
+	result <- viaoCep
+}
 func printAddress(address *Address) {
+	fmt.Println("Endereço encontrado pela primeira API:")
 	fmt.Printf("CEP: %s\n", address.Cep)
 	fmt.Printf("Logradouro: %s\n", address.Logradouro)
 	fmt.Printf("Bairro: %s\n", address.Bairro)
