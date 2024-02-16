@@ -36,6 +36,7 @@ type Address struct {
 	Bairro     string `json:"bairro"`
 	Localidade string `json:"localidade"`
 	Uf         string `json:"uf"`
+	Api        string `json:"api"`
 }
 type API uint8
 
@@ -89,6 +90,7 @@ func fetchAddress(url string, result chan<- *Address, api API) {
 			Bairro:     viaoCep.Bairro,
 			Localidade: viaoCep.Localidade,
 			Uf:         viaoCep.Uf,
+			Api:        "Viacep",
 		}
 	}
 	if api == Brasilapi {
@@ -101,6 +103,7 @@ func fetchAddress(url string, result chan<- *Address, api API) {
 			Bairro:     brasilApi.Neighborhood,
 			Localidade: brasilApi.City,
 			Uf:         brasilApi.State,
+			Api:        "Brasilapi",
 		}
 	}
 
@@ -118,4 +121,5 @@ func printAddress(address *Address) {
 	fmt.Printf("Bairro: %s\n", address.Bairro)
 	fmt.Printf("Localidade: %s\n", address.Localidade)
 	fmt.Printf("UF: %s\n", address.Uf)
+	fmt.Printf("Api: %s\n", address.Api)
 }
