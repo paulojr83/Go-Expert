@@ -28,7 +28,7 @@ type SerialNumber struct {
 }
 
 func main() {
-	dsn := "root:root@tcp(localhost:3306)/goexpert?charset=utf8mb4&parseTime=True&loc=Local"
+	dsn := "root:root@tcp(localhost:3306)/courses?charset=utf8mb4&parseTime=True&loc=Local"
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
 		panic(err)

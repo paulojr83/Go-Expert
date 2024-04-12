@@ -96,7 +96,7 @@ func deleteProduct(db *sql.DB, id string) error {
 	return nil
 }
 func main() {
-	db, err := sql.Open("mysql", "root:root@tcp(localhost:3306)/goexpert")
+	db, err := sql.Open("mysql", "root:root@tcp(localhost:3306)/courses")
 	defer db.Close()
 	if err != nil {
 		panic(err)
