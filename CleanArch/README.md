@@ -54,3 +54,17 @@ Now we run go generate to execute wire:
 
      go run github.com/99designs/gqlgen init
      go run github.com/99designs/gqlgen generate
+
+
+
+## Testes 
+
+### Request do GET rest
+![image](https://github.com/paulojr83/Go-Expert/assets/1100493/c15dc085-0702-4277-a6cb-9363fd24aaea)
+
+### Request do GRPC
+![image](https://github.com/paulojr83/Go-Expert/assets/1100493/df7a2118-b6b1-481a-a9f5-132cf9895fc7)
+
+### Request do GraphQL
+![image](https://github.com/paulojr83/Go-Expert/assets/1100493/7dbb3a86-4d4c-4846-aab9-c6b1a25bb7fd)
+
