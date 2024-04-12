@@ -19,3 +19,6 @@
 
 # Go workspace file
 packaging/go.work
+CleanArch/.docker
+.idea/dataSources.xml
+.idea/sqldialects.xml
