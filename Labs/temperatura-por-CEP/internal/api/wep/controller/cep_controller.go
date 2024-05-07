@@ -11,7 +11,7 @@ import (
 func FindCep(c *gin.Context) {
 	cep := c.Param("cep")
 
-	if cep == "" || len(cep) < 8 {
+	if cep == "" || len(cep) != 8 {
 		c.JSON(http.StatusUnprocessableEntity, "invalid zipcode")
 		return
 	}
