@@ -28,6 +28,10 @@ func FindCep(c *gin.Context) {
 		return
 	}
 
+	if result.Erro {
+		c.JSON(http.StatusNotFound, "Can not find zipcode")
+		return
+	}
 	weather, err := service.FetchWeather(result.Localidade, configData)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, err)
