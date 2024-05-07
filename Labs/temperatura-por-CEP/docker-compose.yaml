@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  gotempapp:
+    container_name: gotempapp
+    build:
+      context: .
+    environment:
+      - WEATHER_API_KEY=MINHA-KEY
+      - VIA_CEP_API=http://viacep.com.br/ws/%s/json/
+      - WEATHER_API=http://api.weatherapi.com/v1/current.json?q=%s&key=%s
+      - HTTP_PORT=:8080
+    ports:
+      - "8080:8080"

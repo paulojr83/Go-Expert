@@ -1,6 +1,6 @@
 module github.com/paulojr83/Go-Expert/CleanArch
 
-go 1.22.1
+go 1.22.2
 
 require (
 	github.com/99designs/gqlgen v0.17.45
@@ -10,7 +10,6 @@ require (
 	github.com/google/wire v0.6.0
 	github.com/mattn/go-sqlite3 v1.14.22
 	github.com/spf13/viper v1.18.2
-	github.com/streadway/amqp v1.1.0
 	github.com/stretchr/testify v1.9.0
 	github.com/vektah/gqlparser/v2 v2.5.11
 	google.golang.org/grpc v1.63.2

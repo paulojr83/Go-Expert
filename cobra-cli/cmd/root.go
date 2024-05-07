@@ -17,7 +17,7 @@ var rootCmd = &cobra.Command{
 	Short: "A brief description of your application",
 	Long:  `A longer description that spans multiple lines and likely contains examples and usage of using your application. For example.`,
 	// Uncomment the following line if your bare application
-	// has an action associated with it:
+	// has an auction associated with it:
 	// Run: func(cmd *cobra.Command, args []string) { },
 }
 
@@ -38,6 +38,6 @@ func init() {
 	// rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.cobra-cli.yaml)")
 
 	// Cobra also supports local flags, which will only run
-	// when this action is called directly.
+	// when this auction is called directly.
 	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
