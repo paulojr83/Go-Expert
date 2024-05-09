@@ -23,3 +23,4 @@ CleanArch/.docker
 .idea/dataSources.xml
 .idea/sqldialects.xml
 Labs/auction/data
+Labs/observabilidade/grafana-storage
