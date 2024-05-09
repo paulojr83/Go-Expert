@@ -62,6 +62,9 @@ Após a implementação dos serviços, adicione a implementação do OTEL + Zipk
         --data '{
             "cep": "01153000"
         }'
+![image](https://github.com/paulojr83/Go-Expert/assets/1100493/cf996dda-bc7e-44d8-8a08-16dc4f64dcff)
+
+       
 ![img_1.png](img/img_4.png)
 
 ### Como fazer o deploy com docker
