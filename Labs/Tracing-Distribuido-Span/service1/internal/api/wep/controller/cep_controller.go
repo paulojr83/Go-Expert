@@ -53,11 +53,15 @@ func FindCepMux(w http.ResponseWriter, r *http.Request) {
 func FindCep(c *gin.Context) {
 	var cep service.CepData
 	if err := c.ShouldBindJSON(&cep); err != nil {
-		if cep.Cep == "" || len(cep.Cep) != 8 {
-			c.JSON(http.StatusUnprocessableEntity, "invalid zipcode")
-		}
+		c.JSON(http.StatusInternalServerError, err)
 		return
 	}
+
+	if cep.Cep == "" || len(cep.Cep) != 8 {
+		c.JSON(http.StatusUnprocessableEntity, "invalid zipcode")
+		return
+	}
+
 	configData := &configs.Conf{
 		Service2: viper.GetString("SERVICE2_API"),
 	}
@@ -67,7 +71,7 @@ func FindCep(c *gin.Context) {
 
 	result, err := service.FetchViaCep(ctx, cep, configData)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, err)
+		c.JSON(err.ErrCode, err.Message)
 		return
 	}
 
