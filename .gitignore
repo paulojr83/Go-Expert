@@ -24,3 +24,4 @@ CleanArch/.docker
 .idea/sqldialects.xml
 Labs/auction/data
 Labs/observabilidade/grafana-storage
+.idea/**
