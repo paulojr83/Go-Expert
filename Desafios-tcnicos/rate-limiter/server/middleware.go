@@ -2,6 +2,7 @@ package server
 
 import (
 	"context"
+	"fmt"
 	"github.com/paulojr83/Go-Expert/Desafios-tcnicos/rate-limiter/limiter-config"
 	"net/http"
 	"strings"
@@ -12,7 +13,6 @@ func RateLimitMiddleware(limiter *limiter_config.Limiter) func(http.Handler) htt
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			ip := strings.Split(r.RemoteAddr, ":")[0]
 			token := r.Header.Get("Authorization")
-
 			if token == "" {
 				http.Error(w, "there is no token", http.StatusUnauthorized)
 				return
@@ -21,7 +21,7 @@ func RateLimitMiddleware(limiter *limiter_config.Limiter) func(http.Handler) htt
 			allowed, err := limiter.AllowRequest(context.Background(), key, limit)
 
 			if err != nil {
-				http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+				http.Error(w, fmt.Sprintf("Internal Server Error %s", err), http.StatusInternalServerError)
 				return
 			}
 

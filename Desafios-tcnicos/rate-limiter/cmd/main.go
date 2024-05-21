@@ -1,7 +1,6 @@
 package main
 
 import (
-	"github.com/joho/godotenv"
 	"github.com/paulojr83/Go-Expert/Desafios-tcnicos/rate-limiter/config"
 	"github.com/paulojr83/Go-Expert/Desafios-tcnicos/rate-limiter/limiter-config"
 	"github.com/paulojr83/Go-Expert/Desafios-tcnicos/rate-limiter/server"
@@ -11,11 +10,12 @@ import (
 )
 
 func main() {
-	err := godotenv.Load()
+	//Deixar comentado para rodar o docker-compose
+	/*err := godotenv.Load()
 	if err != nil {
 		log.Fatalf("Error loading .env file")
 	}
-
+	*/
 	dataConfig, err := config.LoadConfig()
 	if err != nil {
 		log.Fatalf("Error loading config: %v", err)
