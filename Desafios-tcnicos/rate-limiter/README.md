@@ -92,3 +92,14 @@ Defina STORAGE_TYPE=redis e configure os parâmetros de conexão do Redis.
 
 ### Usando Armazenamento em Memória
 Defina STORAGE_TYPE=memory para usar o armazenamento em memória. Essa opção é útil para testes ou ambientes onde o Redis não está disponível.
+
+
+### Test api examples 
+```sh
+curl --location --request POST 'http://localhost:8080/' --header 'API_KEY: Test'
+```
+### Ok 
+![img.png](img.png) 
+
+### The maximum number of requests
+![img_1.png](img_1.png)

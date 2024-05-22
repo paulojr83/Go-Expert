@@ -23,8 +23,10 @@ func (l *Limiter) AllowRequest(ctx context.Context, key string, limit int) (bool
 		return false, err
 	}
 
+	expireTime := time.Duration(l.config.BlockTime) * time.Second
+
 	if count == 1 {
-		l.storage.Expire(ctx, key, time.Second)
+		l.storage.Expire(ctx, key, expireTime)
 	}
 
 	if count > int64(limit) {
