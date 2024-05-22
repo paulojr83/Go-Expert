@@ -21,13 +21,13 @@ O Load Tester CLI é uma ferramenta desenvolvida em Go para realizar testes de c
 * Code 200
 
    ```sh
-   go run .\cmd\main.go --url=http://google.com --requests=10 --concurrency=10    
+   go run .\cmd\main.go --url=https://fullcycle.com.br --requests=10 --concurrency=10    
    ```
 ![img_2.png](img_2.png)
 
 * Code 404
    ```sh
-   go run .\cmd\main.go --url=http://google.com/404 --requests=10 --concurrency=10    
+   go run .\cmd\main.go --url=https://google.com/404 --requests=10 --concurrency=10    
    ```
 ![img.png](img.png)
 
@@ -39,9 +39,25 @@ O Load Tester CLI é uma ferramenta desenvolvida em Go para realizar testes de c
    docker build -t load-tester .
    ```
 
-2. Execute o contêiner Docker:
+2. Execute o container Docker: 
 
-    ```sh
-    docker run --rm load-tester --url=http://google.com --requests=10 --concurrency=10
-    ```
+Para executar direto no container Docker https é necessário configurando o Docker Engine para acesso remoto com TLS
+
+
+```sh
+  docker run --rm load-tester --url=http://google.com.br/404 --requests=10 --concurrency=10
+```
+
 ![img_1.png](img_1.png)
+
+
+_Eu verifiquei e vi que não tem erro de programação, o problema é quando executa o programa direto do Docker_
+Utilizar o "Como usar sem o Docker", está funcionando com https
+
+## Configurando o Docker Engine para acesso remoto com TLS
+
+https://www.ibm.com/docs/pt-br/addi/6.1.2?topic=prerequisites-configuring-docker-engine-remote-access-tls
+
+
+
+
