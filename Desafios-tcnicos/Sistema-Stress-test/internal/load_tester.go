@@ -64,10 +64,12 @@ func (lt *LoadTester) Report(duration time.Duration) {
 
 	for resp := range lt.results {
 		totalRequests++
-		statusCodes[resp.StatusCode]++
+
 		fmt.Sprintf("StatusCode: ", resp.StatusCode)
 		if resp.StatusCode == http.StatusOK {
 			status200++
+		} else {
+			statusCodes[resp.StatusCode]++
 		}
 		resp.Body.Close()
 	}
@@ -78,10 +80,14 @@ func (lt *LoadTester) Report(duration time.Duration) {
 	fmt.Printf("Total de Requisições: %d\n", totalRequests)
 	fmt.Printf("Tempo Total: %v\n", duration)
 	fmt.Printf("Status 200: %d\n", status200)
-	fmt.Println("Outros Status Codes:")
-	for code, count := range statusCodes {
-		if code != http.StatusOK {
-			fmt.Printf("Status %d: %d\n", code, count)
+	if len(statusCodes) == 0 {
+		fmt.Printf("Outros Status Codes: %d", len(statusCodes))
+	} else {
+		fmt.Println("Outros Status Codes:")
+		for code, count := range statusCodes {
+			if code != http.StatusOK {
+				fmt.Printf("Status %d: %d\n", code, count)
+			}
 		}
 	}
 }
