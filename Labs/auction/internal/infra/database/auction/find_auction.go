@@ -17,7 +17,7 @@ func (ar AuctionRepository) FindAuctionById(ctx context.Context,
 	auctionId string,
 ) (*auction_entity.Auction, *internal_error.InternalError) {
 
-	var auctionEntityMongo AuctionEntityMongo
+	var auctionEntityMongo *AuctionEntityMongo
 
 	filter := bson.M{"_id": auctionId}
 	err := ar.Collection.FindOne(ctx, filter).Decode(auctionEntityMongo)
@@ -75,7 +75,7 @@ func (ar AuctionRepository) FindAuctions(ctx context.Context,
 	defer cursor.Close(ctx)
 
 	var auctionsEntityMongo []AuctionEntityMongo
-	if err := cursor.All(ctx, auctionsEntityMongo); err != nil {
+	if err := cursor.All(ctx, &auctionsEntityMongo); err != nil {
 		logger.Error("Error trying to find Auctions", err)
 		return nil, internal_error.NewInternalServerError("Error trying to find Auctions")
 	}

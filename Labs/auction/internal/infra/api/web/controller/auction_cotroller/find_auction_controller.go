@@ -59,7 +59,7 @@ func (ac *AuctionController) FindAuctions(c *gin.Context) {
 	c.JSON(http.StatusOK, auctions)
 }
 func (ac *AuctionController) FindAuctionById(c *gin.Context) {
-	auctionId := c.Query("auctionId")
+	auctionId := c.Param("auctionId")
 
 	if err := uuid.Validate(auctionId); err != nil {
 		errRest := rest_err.NewBadRequestError("Invalid fields", rest_err.Causes{

@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"github.com/gin-gonic/gin"
-	"github.com/joho/godotenv"
 	"github.com/paulojr83/Go-Expert/Labs/auction/configuration/database/mongodb"
 	"github.com/paulojr83/Go-Expert/Labs/auction/internal/infra/api/web/controller/auction_cotroller"
 	"github.com/paulojr83/Go-Expert/Labs/auction/internal/infra/api/web/controller/bid_controller"
@@ -16,13 +15,14 @@ import (
 	"github.com/paulojr83/Go-Expert/Labs/auction/internal/usecase/user_usecase"
 	"go.mongodb.org/mongo-driver/mongo"
 	"log"
+	"os"
 )
 
 func main() {
-	if err := godotenv.Load("cmd/auction/.env"); err != nil {
+	/*if err := godotenv.Load("cmd/auction/.env"); err != nil {
 		log.Fatalf("Error trying to load env variables %w", err)
 		return
-	}
+	}*/
 	ctx := context.Background()
 
 	mongoDBConnection, err := mongodb.NewMongoDBConnection(ctx)
@@ -46,7 +46,9 @@ func main() {
 
 	router.GET("/users/:userId", userController.FindUserById)
 
-	err = router.Run(":8080")
+	PORT := os.Getenv("HTTP_PORT")
+	err = router.Run(PORT)
+	log.Println("Starting server on port: ", PORT)
 	if err != nil {
 		panic(err)
 		return
